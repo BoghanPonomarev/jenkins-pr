@@ -8,7 +8,7 @@ class JenkinsPrApplicationTests {
 
     @Test
     void contextLoads() {
-        System.out.println("hello 1");
+        System.out.println("hello 2");
     }
 
 }
