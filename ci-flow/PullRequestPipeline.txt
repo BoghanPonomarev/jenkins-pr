@@ -2,10 +2,19 @@ pipeline {
     agent any
 
     stages {
-        stage('1') {
+        stage('Build') {
             steps {
-                echo "Hello"
+                sh {
+                   gradlew build -x test
+                }
             }
+        }
+        stage('Unit tests') {
+          steps {
+                sh {
+                  gradlew test
+                }
+          }
         }
     }
 }
