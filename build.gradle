@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.3.3.RELEASE'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'org.asciidoctor.convert' version '1.5.8'
+    id "org.flywaydb.flyway" version "6.4.2" // Flyway plugin!
     id 'java'
 }
 
@@ -25,12 +26,31 @@ ext {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
+
+// -------------------------------------------- Flyway block start --------------------------------------------
+
+flyway {
+    url = "$System.env.DB_NO_SCHEMA_URL"
+    user = "$System.env.DB_USERNAME"
+    password = "$System.env.DB_PASSWORD"
+    schemas = ['jenkins-pr']
+    baselineOnMigrate = true
+    placeholders = [
+            'useUnicode': 'true',
+            'serverTimezone': 'UTC'
+    ]
+}
+
+// -------------------------------------------- Flyway block start --------------------------------------------
 
 test {
     outputs.dir snippetsDir
@@ -41,3 +61,29 @@ asciidoctor {
     inputs.dir snippetsDir
     dependsOn test
 }
+
+// -------------------------------------------- Integration test block start --------------------------------------------
+// Create folder "test-it" before build
+
+sourceSets {
+    integrationTest {
+        java.srcDir "$projectDir/src/test-it/java"
+        resources.srcDir "$projectDir/src/test-it/resources"
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
+}
+
+configurations {
+    integrationImplementation.extendsFrom testImplementation
+    integrationRuntime.extendsFrom testRuntime
+}
+
+task integrationTest(type: Test) {
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+check.dependsOn integrationTest
+
+// -------------------------------------------- Integration test block finish -------------------------------------------
