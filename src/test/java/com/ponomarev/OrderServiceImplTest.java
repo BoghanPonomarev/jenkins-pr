@@ -25,6 +25,7 @@ public class OrderServiceImplTest {
 
     private static final long TEST_ORDER_ID = 1L;
     private static final int RANDOM_STRING_LENGTH = 5;
+
     @InjectMocks
     private OrderServiceImpl orderService;
 

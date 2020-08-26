@@ -10,20 +10,20 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "order")
+@Table(name = "[order]")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique = true, nullable = false)
     private String hash;
 
-    @Column
+    @Column(nullable = false)
     private String producer;
 
-    @Column
+    @Column(nullable = false)
     private String consumer;
 
 }

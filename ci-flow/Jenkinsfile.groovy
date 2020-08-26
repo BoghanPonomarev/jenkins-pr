@@ -12,6 +12,11 @@ pipeline {
                 sh './gradlew test --info'
           }
         }
+        stage('Integration tests') {
+            steps {
+                sh './gradlew integrationTest --info'
+            }
+        }
     }
     post {
             always {

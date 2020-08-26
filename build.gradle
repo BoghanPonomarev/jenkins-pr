@@ -24,6 +24,32 @@ ext {
     set('snippetsDir', file("build/generated-snippets"))
 }
 
+// -------------------------------------------- Integration test block start --------------------------------------------
+// Create folder "test-it" before build
+
+sourceSets {
+    integrationTest {
+        java.srcDir "$projectDir/src/test-it/java"
+        resources.srcDir "$projectDir/src/test-it/resources"
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testImplementation
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+task integrationTest(type: Test) {
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+check.dependsOn integrationTest
+
+// -------------------------------------------- Integration test block finish -------------------------------------------
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -34,6 +60,8 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+    integrationTestCompile 'org.springframework.boot:spring-boot-starter-test'
+    integrationTestRuntime 'mysql:mysql-connector-java'
 }
 
 // -------------------------------------------- Flyway block start --------------------------------------------
@@ -61,29 +89,3 @@ asciidoctor {
     inputs.dir snippetsDir
     dependsOn test
 }
-
-// -------------------------------------------- Integration test block start --------------------------------------------
-// Create folder "test-it" before build
-
-sourceSets {
-    integrationTest {
-        java.srcDir "$projectDir/src/test-it/java"
-        resources.srcDir "$projectDir/src/test-it/resources"
-        compileClasspath += main.output + test.output
-        runtimeClasspath += main.output + test.output
-    }
-}
-
-configurations {
-    integrationImplementation.extendsFrom testImplementation
-    integrationRuntime.extendsFrom testRuntime
-}
-
-task integrationTest(type: Test) {
-    testClassesDirs = sourceSets.integrationTest.output.classesDirs
-    classpath = sourceSets.integrationTest.runtimeClasspath
-}
-
-check.dependsOn integrationTest
-
-// -------------------------------------------- Integration test block finish -------------------------------------------

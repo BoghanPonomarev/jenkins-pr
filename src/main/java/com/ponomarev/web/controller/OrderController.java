@@ -21,15 +21,15 @@ public class OrderController {
     @PostMapping(value = "/order", consumes = "application/json")
     public ResponseEntity<Long> postOrder(@RequestBody CreateOrderDto createOrderDto) {
         Long newOrderId = orderService.createOrder(createOrderDto);
-        return ResponseEntity.ok(newOrderId);
+        return ResponseEntity.status(201).body(newOrderId);
     }
 
-    @GetMapping(value = "/order/{orderId}")
+    @GetMapping(value = "/order/{orderId}", produces = "application/json")
     public ResponseEntity<OrderDto> getOrder(@PathVariable Long orderId) {
         return ResponseEntity.ok(orderService.getOrder(orderId));
     }
 
-    @GetMapping(value = "/orders")
+    @GetMapping(value = "/orders", produces = "application/json")
     public ResponseEntity<List<OrderDto>> getOrderList() {
         return ResponseEntity.ok(orderService.getOrderList());
     }
