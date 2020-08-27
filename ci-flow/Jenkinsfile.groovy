@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh './gradlew clean build -x test -x integrationTest'
+                sh './gradlew clean build -x test -x integrationTest -x checkstyleMain -x checkstyleTest'
             }
         }
         stage('Checkstyle') {
