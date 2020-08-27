@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CreateOrderDto {
 
-    private String producer;
-    private String consumer;
-
+  private String producer;
+  private String consumer;
 }

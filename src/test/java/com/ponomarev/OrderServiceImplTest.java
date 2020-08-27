@@ -23,64 +23,62 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class OrderServiceImplTest {
 
-    private static final long TEST_ORDER_ID = 1L;
-    private static final int RANDOM_STRING_LENGTH = 5;
+  private static final long TEST_ORDER_ID = 1L;
+  private static final int RANDOM_STRING_LENGTH = 5;
 
-    @InjectMocks
-    private OrderServiceImpl orderService;
+  @InjectMocks private OrderServiceImpl orderService;
 
-    @Mock
-    private JpaRepository<Order,Long> orderRepository;
+  @Mock private JpaRepository<Order, Long> orderRepository;
 
-    @Test
-    public void shouldCreateOrder() {
-        CreateOrderDto createOrderDto = new CreateOrderDto(RandomStringUtils.randomAlphabetic(RANDOM_STRING_LENGTH),
-                RandomStringUtils.randomAlphabetic(RANDOM_STRING_LENGTH));
-        Order expectedCreatedOrder = convertToOrder(createOrderDto);
-        Order responseOrder = new Order();
-        responseOrder.setId(TEST_ORDER_ID);
-        when(orderRepository.save(expectedCreatedOrder)).thenReturn(responseOrder);
+  @Test
+  public void shouldCreateOrder() {
+    CreateOrderDto createOrderDto =
+        new CreateOrderDto(
+            RandomStringUtils.randomAlphabetic(RANDOM_STRING_LENGTH),
+            RandomStringUtils.randomAlphabetic(RANDOM_STRING_LENGTH));
+    Order expectedCreatedOrder = convertToOrder(createOrderDto);
+    Order responseOrder = new Order();
+    responseOrder.setId(TEST_ORDER_ID);
+    when(orderRepository.save(expectedCreatedOrder)).thenReturn(responseOrder);
 
-        orderService.createOrder(createOrderDto);
+    orderService.createOrder(createOrderDto);
 
-        verify(orderRepository).save(expectedCreatedOrder);
-    }
+    verify(orderRepository).save(expectedCreatedOrder);
+  }
 
-    @Test
-    public void shouldObtainOrder() {
-        when(orderRepository.findById(TEST_ORDER_ID)).thenReturn(Optional.of(generateOrder()));
+  @Test
+  public void shouldObtainOrder() {
+    when(orderRepository.findById(TEST_ORDER_ID)).thenReturn(Optional.of(generateOrder()));
 
-        OrderDto order = orderService.getOrder(TEST_ORDER_ID);
+    OrderDto order = orderService.getOrder(TEST_ORDER_ID);
 
-        assertNotNull(order);
-        assertEquals(order.getId(), TEST_ORDER_ID);
-        assertNotNull(order.getHash());
-        assertNotNull(order.getConsumer());
-        assertNotNull(order.getProducer());
-    }
+    assertNotNull(order);
+    assertEquals(order.getId(), TEST_ORDER_ID);
+    assertNotNull(order.getHash());
+    assertNotNull(order.getConsumer());
+    assertNotNull(order.getProducer());
+  }
 
-    @Test
-    public void shouldDeleteOrder() {
-        orderService.removeOrder(TEST_ORDER_ID);
+  @Test
+  public void shouldDeleteOrder() {
+    orderService.removeOrder(TEST_ORDER_ID);
 
-        verify(orderRepository).deleteById(TEST_ORDER_ID);
-    }
+    verify(orderRepository).deleteById(TEST_ORDER_ID);
+  }
 
-    private Order generateOrder() {
-        Order order = new Order();
-        order.setId(TEST_ORDER_ID);
-        order.setHash(UUID.randomUUID().toString());
-        order.setProducer(RandomStringUtils.randomAlphabetic(RANDOM_STRING_LENGTH));
-        order.setConsumer(RandomStringUtils.randomAlphabetic(RANDOM_STRING_LENGTH));
-        return order;
-    }
+  private Order generateOrder() {
+    Order order = new Order();
+    order.setId(TEST_ORDER_ID);
+    order.setHash(UUID.randomUUID().toString());
+    order.setProducer(RandomStringUtils.randomAlphabetic(RANDOM_STRING_LENGTH));
+    order.setConsumer(RandomStringUtils.randomAlphabetic(RANDOM_STRING_LENGTH));
+    return order;
+  }
 
-    private Order convertToOrder(CreateOrderDto createOrderDto) {
-        Order order = new Order();
-        order.setProducer(createOrderDto.getProducer());
-        order.setConsumer(createOrderDto.getConsumer());
-        return order;
-    }
-
-
+  private Order convertToOrder(CreateOrderDto createOrderDto) {
+    Order order = new Order();
+    order.setProducer(createOrderDto.getProducer());
+    order.setConsumer(createOrderDto.getConsumer());
+    return order;
+  }
 }

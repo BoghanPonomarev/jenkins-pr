@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderDto {
 
-    private Long id;
-    private String hash;
-    private String producer;
-    private String consumer;
-
+  private Long id;
+  private String hash;
+  private String producer;
+  private String consumer;
 }

@@ -10,8 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(basePackages = "com.ponomarev.repository")
 public class JenkinsPrApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(JenkinsPrApplication.class, args);
-    }
-
+  public static void main(String[] args) {
+    SpringApplication.run(JenkinsPrApplication.class, args);
+  }
 }

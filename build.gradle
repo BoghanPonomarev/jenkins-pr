@@ -3,6 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'org.asciidoctor.convert' version '1.5.8'
     id "org.flywaydb.flyway" version "6.4.2" // Flyway plugin!
+    id 'checkstyle'
     id 'java'
 }
 
@@ -49,6 +50,13 @@ task integrationTest(type: Test) {
 check.dependsOn integrationTest
 
 // -------------------------------------------- Integration test block finish -------------------------------------------
+checkstyle {
+    toolVersion = '8.29'
+    maxWarnings = 0
+    configFile = file("$projectDir/ci-flow/checkstyle.xml")
+    showViolations = true
+    ignoreFailures = false
+}
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -73,7 +81,7 @@ flyway {
     schemas = ['jenkins-pr']
     baselineOnMigrate = true
     placeholders = [
-            'useUnicode': 'true',
+            'useUnicode'    : 'true',
             'serverTimezone': 'UTC'
     ]
 }

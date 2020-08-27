@@ -5,19 +5,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonUtils {
 
-    public static ObjectMapper objectMapper = new ObjectMapper();
+  private static ObjectMapper objectMapper = new ObjectMapper();
 
-    private JsonUtils() {
-        throw new UnsupportedOperationException();
+  private JsonUtils() {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * Parse any entity to json.
+   *
+   * @param entity - entity to parse.
+   * @param <T> - entity type.
+   * @return - json string.
+   */
+  public static <T> String parseToJson(T entity) {
+    try {
+      return objectMapper.writeValueAsString(entity);
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
     }
-
-    public static <T> String mapToJson(T entity) {
-        try {
-           return objectMapper.writeValueAsString(entity);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
+    return null;
+  }
 }

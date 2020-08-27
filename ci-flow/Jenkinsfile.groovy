@@ -7,10 +7,15 @@ pipeline {
                 sh './gradlew clean build -x test -x integrationTest'
             }
         }
+        stage('Checkstyle') {
+            steps {
+                sh './gradlew checkstyleMain'
+            }
+        }
         stage('Unit tests') {
-          steps {
+            steps {
                 sh './gradlew test --info'
-          }
+            }
         }
         stage('Integration tests') {
             steps {
@@ -19,8 +24,9 @@ pipeline {
         }
     }
     post {
-            always {
-                junit 'build/test-results/**/*.xml'
-            }
-     }
+        always {
+            junit 'build/test-results/**/*.xml'
+            checkstyle 'build/reports/checkstyle/*.xml'
+        }
+    }
 }
