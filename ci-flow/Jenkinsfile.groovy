@@ -20,9 +20,7 @@ pipeline {
         stage('Init and migrate databse') {
             steps {
                 sh 'mysql -u ${DB_USERNAME} -p${DB_PASSWORD} -h ${DB_URL} -P 3306'
-                mysql 'DROP SCHEMA IF EXISTS jenkins_pr;'
-                mysql 'CREATE SCHEMA jenkins_pr;'
-                mysql 'source ./db_init.sql'
+                sh 'source ./db_init.sql'
             }
         }
         stage('Integration tests') {

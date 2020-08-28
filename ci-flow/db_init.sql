@@ -1,3 +1,7 @@
+DROP SCHEMA IF EXISTS jenkins_pr;
+
+CREATE SCHEMA jenkins_pr;
+
 CREATE TABLE jenkins_pr.order
 (
     id       INT UNSIGNED NOT NULL AUTO_INCREMENT,
