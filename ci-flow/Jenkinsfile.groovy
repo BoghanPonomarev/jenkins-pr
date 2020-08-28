@@ -19,8 +19,7 @@ pipeline {
         }
         stage('Init and migrate databse') {
             steps {
-                sh 'mysql -u ${DB_USERNAME} -p${DB_PASSWORD} -h ${DB_URL} -P 3306'
-                sh 'source ./db_init.sql'
+                sh 'mysql -u ${DB_USERNAME} -p${DB_PASSWORD} -h ${DB_URL} -P 3306 < ./db_init.sql'
             }
         }
         stage('Integration tests') {
