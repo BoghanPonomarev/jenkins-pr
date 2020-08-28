@@ -50,6 +50,9 @@ task integrationTest(type: Test) {
 check.dependsOn integrationTest
 
 // -------------------------------------------- Integration test block finish -------------------------------------------
+
+// -------------------------------------------- Checkstyle block start --------------------------------------------------
+
 checkstyle {
     toolVersion = '8.29'
     maxWarnings = 0
@@ -57,6 +60,8 @@ checkstyle {
     showViolations = true
     ignoreFailures = false
 }
+
+// -------------------------------------------- Checkstyle block finish -------------------------------------------
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -75,18 +80,18 @@ dependencies {
 // -------------------------------------------- Flyway block start --------------------------------------------
 
 flyway {
-    url = "$System.env.DB_NO_SCHEMA_URL"
-    user = "$System.env.DB_USERNAME"
-    password = "$System.env.DB_PASSWORD"
-    schemas = ['jenkins-pr']
-    baselineOnMigrate = true
+    url = "jdbc:mysql://jenkins-pr-db.ctstv856hvl5.eu-central-1.rds.amazonaws.com:3306"
+    user = "admin"
+    password = "admin123321"
+    schemas = ['jenkins_pr']
+    defaultSchema = true
     placeholders = [
             'useUnicode'    : 'true',
             'serverTimezone': 'UTC'
     ]
 }
 
-// -------------------------------------------- Flyway block start --------------------------------------------
+// -------------------------------------------- Flyway block finish --------------------------------------------
 
 test {
     outputs.dir snippetsDir
