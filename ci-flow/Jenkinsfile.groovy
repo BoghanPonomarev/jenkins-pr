@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Init and migrate databse') {
             steps {
-                sh 'mysql -u ${DB_USERNAME} -p\'${DB_PASSWORD}\' -h ${DB_URL} -P 3306'
+                sh 'mysql -u ${DB_USERNAME} -p${DB_PASSWORD} -h ${DB_URL} -P 3306'
                 sh 'DROP SCHEMA IF EXISTS jenkins_pr;'
                 sh 'CREATE SCHEMA jenkins_pr;'
                 sh 'source ./db_init.sql'
