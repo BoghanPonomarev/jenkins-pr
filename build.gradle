@@ -77,7 +77,7 @@ dependencies {
     integrationTestRuntime 'mysql:mysql-connector-java'
 }
 
-// -------------------------------------------- Flyway block start --------------------------------------------
+// -------------------------------------------- Flyway block start ------------------------------------------
 
 flyway {
     url = "$System.env.DB_URL"
