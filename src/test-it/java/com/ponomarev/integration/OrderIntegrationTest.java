@@ -1,4 +1,4 @@
-package com.ponomarev.test;
+package com.ponomarev.integration;
 
 import static com.ponomarev.JsonUtils.parseToJson;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
