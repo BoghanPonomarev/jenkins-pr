@@ -80,11 +80,16 @@ dependencies {
 // -------------------------------------------- Flyway block start --------------------------------------------
 
 flyway {
-    url = "jdbc:mysql://jenkins-pr-db.ctstv856hvl5.eu-central-1.rds.amazonaws.com:3306"
-    user = "admin"
-    password = "admin123321"
+    url = "$System.env.DB_URL"
+    user = "$System.env.DB_USERNAME"
+    password = "$System.env.DB_PASSWORD"
     schemas = ['jenkins_pr']
-    defaultSchema = true
+    baselineOnMigrate = true
+    if(System.properties['PROFILE'] != "prod") {
+        locations = ["filesystem:ci-flow/db/migration"]
+    } else {
+        locations = ["filesystem:ci-flow/db/migration/schema"]
+    }
     placeholders = [
             'useUnicode'    : 'true',
             'serverTimezone': 'UTC'

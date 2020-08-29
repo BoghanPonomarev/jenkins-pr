@@ -1,6 +1,7 @@
 package com.ponomarev.test;
 
 import static com.ponomarev.JsonUtils.parseToJson;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.ponomarev.web.dto.CreateOrderDto;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import static org.hamcrest.Matchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -34,5 +36,17 @@ public class OrderIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(parseToJson(order)))
         .andExpect(status().isCreated());
+  }
+
+
+  public void shouldObtainOrder() throws Exception {
+    long expectedOrderId = 1L;
+
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/orders/" + expectedOrderId))
+            .andExpect(jsonPath("$.id", is(1)))
+            .andExpect(jsonPath("$.hash", notNullValue()))
+            .andExpect(jsonPath("$.producer", is(TEST_PRODUCER_NAME)))
+            .andExpect(jsonPath("$.consumer", is(TEST_CONSUMER_NAME)))
+            .andExpect(status().isOk());
   }
 }
