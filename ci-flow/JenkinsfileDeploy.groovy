@@ -10,10 +10,12 @@ pipeline {
         }
         stage('Build docker image') {
             steps {
-                sh 'docker ps'
-                sh 'docker rmi $(docker images -q)'
-                sh 'docker build -t azazlovi4up/jenkins-pr:${BUILD_NUMBER} .'
-                sh 'docker push azazlovi4up/jenkins-pr:${BUILD_NUMBER}'
+                dir('./') {
+                    sh 'docker ps'
+                    sh 'docker rmi $(docker images -q)'
+                    sh 'docker build -t azazlovi4up/jenkins-pr:${BUILD_NUMBER} .'
+                    sh 'docker push azazlovi4up/jenkins-pr:${BUILD_NUMBER}'
+                }
             }
         }
     }
