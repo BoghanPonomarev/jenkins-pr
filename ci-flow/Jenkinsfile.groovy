@@ -26,7 +26,6 @@ pipeline {
         }
         stage('Integration tests') {
             steps {
-                sh ''
                 sh './gradlew integrationTest --info'
             }
         }
