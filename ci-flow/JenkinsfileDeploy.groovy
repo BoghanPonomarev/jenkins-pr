@@ -10,7 +10,6 @@ pipeline {
         }
         stage('Build docker image') {
             steps {
-                sh 'sudo -i'
                 sh 'docker rmi $(docker images -q)'
                 sh 'docker build -t azazlovi4up/jenkins-pr:${BUILD_NUMBER} .'
                 sh 'docker push azazlovi4up/jenkins-pr:${BUILD_NUMBER}'
